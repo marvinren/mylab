@@ -20,3 +20,6 @@
     - linux-tools-common
     - apache2-utils
     - docker.io
+    - hping3
+    - tcpdump
+    - htop
