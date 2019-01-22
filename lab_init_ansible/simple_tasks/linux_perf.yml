@@ -1,0 +1,19 @@
+---
+- hosts: linux
+  become: yes
+  become_user: root
+  tasks:
+  - name: Update apt cache
+    apt:
+      update_cache: yes
+  - name: Upgrade all package
+    apt:
+      upgrade: dist
+  - name: Install tools
+    apt:
+      name: "{{ item }}" 
+      state: present
+      update_cache: true
+    with_items:
+    - sysstat
+    - dstat
