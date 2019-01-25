@@ -17,9 +17,18 @@
     with_items:
     - sysstat
     - dstat
-    - linux-tools-common
+    - linux-tools-generic
     - apache2-utils
     - docker.io
     - hping3
     - tcpdump
     - htop
+  - name: Mock Tools
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: true
+    with_items:
+    - stress
+    - sysbench
+
