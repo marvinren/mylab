@@ -9,6 +9,17 @@
   - name: Upgrade all package
     apt:
       upgrade: dist
+  - name: install bcc tools 
+    shell: "{{ item }}" 
+    with_items:
+    - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4052245BD4284CDD
+    - echo "deb https://repo.iovisor.org/apt/xenial xenial main" | sudo tee /etc/apt/sources.list.d/iovisor.list
+    - sudo apt-get update
+    - sudo apt-get install -y bcc-tools libbcc-examples linux-headers-$(uname -r)
+
+  - name: Update
+    apt:
+      update_cache: yes
   - name: Install tools
     apt:
       name: "{{ item }}" 
@@ -23,6 +34,7 @@
     - hping3
     - tcpdump
     - htop
+    - golang-go
   - name: Mock Tools
     apt:
       name: "{{ item }}"
@@ -31,4 +43,10 @@
     with_items:
     - stress
     - sysbench
+  - name: install pcstat
+    shell: | 
+      export GOPATH=~/go
+      export PATH=~/go/bin:$PATH
+      go get golang.org/x/sys/unix
+      go get github.com/tobert/pcstat/pcstat
 
