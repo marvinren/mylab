@@ -43,6 +43,12 @@
     with_items:
     - stress
     - sysbench
+
+  - name: Check pcstat file exists.
+    shell: ls /usr/local/bin/pcstat
+    ignore_errors: True
+    register: pcstat_result
+
   - name: install pcstat
     shell: | 
       if [ $(uname -m) == "x86_64" ] ; then
@@ -52,3 +58,4 @@
       fi
       chmod 755 pcstat
       mv ./pcstat /usr/local/bin
+    when: pcstat_result is failed
