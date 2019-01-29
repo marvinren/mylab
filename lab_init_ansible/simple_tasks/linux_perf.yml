@@ -45,8 +45,10 @@
     - sysbench
   - name: install pcstat
     shell: | 
-      export GOPATH=~/go
-      export PATH=~/go/bin:$PATH
-      go get golang.org/x/sys/unix
-      go get github.com/tobert/pcstat/pcstat
-
+      if [ $(uname -m) == "x86_64" ] ; then
+         curl -L -o pcstat https://github.com/tobert/pcstat/raw/2014-05-02-01/pcstat.x86_64
+      else
+         curl -L -o pcstat https://github.com/tobert/pcstat/raw/2014-05-02-01/pcstat.x86_32
+      fi
+      chmod 755 pcstat
+      mv ./pcstat /usr/local/bin
