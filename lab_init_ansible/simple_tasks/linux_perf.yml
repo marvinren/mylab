@@ -35,6 +35,8 @@
     - tcpdump
     - htop
     - golang-go
+    - numactl
+    - iotop
   - name: Mock Tools
     apt:
       name: "{{ item }}"
@@ -59,3 +61,17 @@
       chmod 755 pcstat
       mv ./pcstat /usr/local/bin
     when: pcstat_result is failed
+    
+  - name: Check bcc file exists.
+    shell: ls /usr/share/bcc/tools
+    ignore_errors: True
+    register: bcc_result
+
+  - name: install bcc
+    shell: |
+        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4052245BD4284CDD 
+        echo "deb https://repo.iovisor.org/apt/$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/iovisor.list 
+        sudo apt-get update 
+        sudo apt-get install bcc-tools libbcc-examples linux-headers-$(uname -r) -y
+    when: bcc_result is failed
+
